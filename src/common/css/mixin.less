@@ -1,0 +1,140 @@
+.bg_image(@url) {
+  background-image: ~'url(@{url}@2x.png)';
+  @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+    background-image: ~'url(@{url}@3x.png)';
+  }
+}
+/*----- 字体 -----*/
+.fs(@px) {
+  font-size: unit(@px / 37.5, rem);
+}
+
+/*----- 上 -----*/
+.t(@px) {
+  top: unit(@px / 37.5, rem);
+}
+
+/*----- 下 -----*/
+.b(@px) {
+  bottom: unit(@px / 37.5, rem);
+}
+
+/*----- 左 -----*/
+.l(@px) {
+  left: unit(@px / 37.5, rem);
+}
+
+/*----- 右 -----*/
+.r(@px) {
+  right: unit(@px / 37.5, rem);
+}
+
+/*----- 宽度 -----*/
+.w(@px) {
+  width: unit(@px / 37.5, rem);
+}
+
+/*----- 高度 -----*/
+.h(@px) {
+  height: unit(@px / 37.5, rem);
+}
+
+/*----- 行高 -----*/
+.lh(@px) {
+  line-height: unit(@px / 37.5, rem);
+}
+
+/*----- 行高 -----*/
+.br(@px) {
+  border-radius: unit(@px / 37.5, rem);
+}
+
+/*----- 背景尺寸 -----*/
+.b_s(@px, @px) {
+  -webkit-background-size: unit(@px / 37.5, rem) unit(@px / 37.5, rem);
+  background-size: unit(@px / 37.5, rem) unit(@px / 37.5, rem);
+}
+/**
+* [背景尺寸，设置宽度，高度auto]
+ */
+.b_s1(@px) {
+  -webkit-background-size: unit(@px / 37.5, rem) auto;
+  background-size: unit(@px / 37.5, rem) auto;
+}
+
+.b_s2(@px) {
+  -webkit-background-size: auto unit(@px / 37.5, rem);
+  background-size: auto unit(@px / 37.5, rem);
+}
+
+/*----- margin -----*/
+.mt(@px) {
+  margin-top: unit(@px / 37.5, rem);
+}
+.mr(@px) {
+  margin-right: unit(@px / 37.5, rem);
+}
+.mb(@px) {
+  margin-bottom: unit(@px / 37.5, rem);
+}
+.ml(@px) {
+  margin-left: unit(@px / 37.5, rem);
+}
+.m-t-l(@1px,@2px) {
+  margin: unit(@1px / 37.5, rem) unit(@2px / 37.5, rem);
+}
+.m-around(@1px,@2px,@3px,@4px) {
+  margin: unit(@1px / 37.5, rem) unit(@2px / 37.5, rem) unit(@3px / 37.5, rem)
+    unit(@4px / 37.5, rem);
+}
+
+/*----- padding -----*/
+.p(@px) {
+  padding: unit(@px / 37.5, rem);
+}
+.pt(@px) {
+  padding-top: unit(@px / 37.5, rem);
+}
+.pr(@px) {
+  padding-right: unit(@px / 37.5, rem);
+}
+.pb(@px) {
+  padding-bottom: unit(@px / 37.5, rem);
+}
+.pl(@px) {
+  padding-left: unit(@px / 37.5, rem);
+}
+.p-t-l(@1px,@2px) {
+  padding: unit(@1px / 37.5, rem) unit(@2px / 37.5, rem);
+}
+.p-around(@1px,@2px,@3px,@4px) {
+  padding: unit(@1px / 37.5, rem) unit(@2px / 37.5, rem) unit(@3px / 37.5, rem)
+    unit(@4px / 37.5, rem);
+}
+
+/*----- Around -----*/
+.around {
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  &.bg {
+    position: absolute;
+    z-index: -5;
+    background-color: white;
+  }
+}
+
+/*----- Image -----*/
+.default-img {
+  position: relative;
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: transparent;
+  }
+}

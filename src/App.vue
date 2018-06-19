@@ -1,23 +1,79 @@
 <template>
-  <div id="app">
-    <img src="./assets/logo.png">
+  <div>
+    <v-header :seller="seller"></v-header>
+    <div class="tab">
+      <div class="tab-item">
+        <router-link to="/goods">商品</router-link>
+      </div>
+      <div class="tab-item">
+        <router-link to="/ratings">评论</router-link>
+      </div>
+      <div class="tab-item">
+        <router-link to="/seller">商家</router-link>
+      </div>
+    </div>
+    <div v-if='address'>
+      {{address}}
+    </div>
     <router-view/>
   </div>
 </template>
 
 <script>
+import header from 'components/header/header';
+import axios from 'axios';
+
+const ERR_OK = 0;
 export default {
   name: 'App',
+  data() {
+    return {
+      seller: null,
+      address: null,
+    };
+  },
+  created() {
+    const self = this;
+    axios.get('/api/seller').then((data) => {
+      if (data.data.errno === ERR_OK) {
+        self.seller = data.data.seller;
+      }
+    });
+    //
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        alert(position.coords.latitude);
+        alert(position.coords.longitude);
+        axios.get(`/elm/bgs/poi/reverse_geo_coding?latitude=${position.coords.latitude}&longitude=${position.coords.longitude}`).then((data) => {
+          self.address = data.data;
+          alert(`${data.data.name}`);
+        });
+      });
+    }
+  },
+  components: { 'v-header': header },
 };
 </script>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+<style lang='less'>
+@import url('./common/css/common.less');
+.tab {
+  display: flex;
+  align-items: center;
+  .h(40);
+  .setBottomLine(rgba(7,17,27,0.1));
+  &-item {
+    flex: 1;
+    text-align: center;
+    & > a {
+      .fs(14);
+      .lh(40);
+      display: block;
+      color: rgb(77, 85, 93);
+      &.active {
+        color: rgb(240, 20, 20);
+      }
+    }
+  }
 }
 </style>

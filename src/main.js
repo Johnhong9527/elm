@@ -5,7 +5,7 @@ import App from './App';
 import router from './router';
 
 Vue.config.productionTip = false;
-
+// router.go('/goods')
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

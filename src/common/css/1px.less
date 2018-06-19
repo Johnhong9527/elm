@@ -1,0 +1,88 @@
+/*----- min-device -----*/
+.minDeviceY() {
+  @media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
+    -webkit-transform: scaleY(0.7);
+    transform: scaleY(0.7);
+  }
+  @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+    -webkit-transform: scaleY(0.5);
+    transform: scaleY(0.5);
+  }
+}
+.minDeviceX() {
+  @media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
+    -webkit-transform: scaleY(0.7);
+    transform: scaleX(0.7);
+  }
+  @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+    -webkit-transform: scaleY(0.5);
+    transform: scaleX(0.5);
+  }
+}
+/*----- 1px -----*/
+.setTopLine(@c: #C7C7C7) {
+  &:after {
+    content: ' ';
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    height: 1px;
+    border-top: 1px solid @c;
+    color: @c;
+    transform-origin: 0 0;
+    transform: scaleY(0.5);
+    .minDeviceY();
+  }
+}
+
+.setBottomLine(@c: #C7C7C7) {
+  position: relative;
+  &:after {
+    content: ' ';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    height: 1px;
+    border-bottom: 1px solid @c;
+    color: @c;
+    transform-origin: 0 100%;
+    transform: scaleY(0.5);
+    .minDeviceY();
+  }
+}
+
+.setLeftLine(@c: #C7C7C7) {
+  position: relative;
+  &::after {
+    content: ' ';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1px;
+    bottom: 0;
+    border-left: 1px solid @c;
+    color: @c;
+    transform-origin: 0 0;
+    transform: scaleX(0.5);
+    .minDeviceX();
+  }
+}
+
+.setRightLine(@c: #C7C7C7) {
+  position: relative;
+  &:after {
+    content: ' ';
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 1px;
+    bottom: 0;
+    border-right: 1px solid @c;
+    color: @c;
+    transform-origin: 100% 0;
+    transform: scaleX(0.5);
+    .minDeviceX();
+  }
+}

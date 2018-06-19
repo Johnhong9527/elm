@@ -1,5 +1,5 @@
 <template>
   <div>
-    home
+    this is ratings
   </div>
 </template>
