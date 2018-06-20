@@ -1,3 +1,6 @@
+/*----- 设计搞比例 -----*/
+@scale: 37.5;
+/*----- 背景图 -----*/
 .bg_image(@url) {
   background-image: ~'url(@{url}@2x.png)';
   @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
@@ -6,110 +9,110 @@
 }
 /*----- 字体 -----*/
 .fs(@px) {
-  font-size: unit(@px / 37.5, rem);
+  font-size: unit(@px /@scale, rem);
 }
 
 /*----- 上 -----*/
 .t(@px) {
-  top: unit(@px / 37.5, rem);
+  top: unit(@px / @scale, rem);
 }
 
 /*----- 下 -----*/
 .b(@px) {
-  bottom: unit(@px / 37.5, rem);
+  bottom: unit(@px / @scale, rem);
 }
 
 /*----- 左 -----*/
 .l(@px) {
-  left: unit(@px / 37.5, rem);
+  left: unit(@px / @scale, rem);
 }
 
 /*----- 右 -----*/
 .r(@px) {
-  right: unit(@px / 37.5, rem);
+  right: unit(@px / @scale, rem);
 }
 
 /*----- 宽度 -----*/
 .w(@px) {
-  width: unit(@px / 37.5, rem);
+  width: unit(@px / @scale, rem);
 }
 
 /*----- 高度 -----*/
 .h(@px) {
-  height: unit(@px / 37.5, rem);
+  height: unit(@px / @scale, rem);
 }
 
 /*----- 行高 -----*/
 .lh(@px) {
-  line-height: unit(@px / 37.5, rem);
+  line-height: unit(@px / @scale, rem);
 }
 
-/*----- 行高 -----*/
+/*----- 边框圆角 -----*/
 .br(@px) {
-  border-radius: unit(@px / 37.5, rem);
+  border-radius: unit(@px / @scale, rem);
 }
 
 /*----- 背景尺寸 -----*/
 .b_s(@px, @px) {
-  -webkit-background-size: unit(@px / 37.5, rem) unit(@px / 37.5, rem);
-  background-size: unit(@px / 37.5, rem) unit(@px / 37.5, rem);
+  -webkit-background-size: unit(@px / @scale, rem) unit(@px / @scale, rem);
+  background-size: unit(@px / @scale, rem) unit(@px / @scale, rem);
 }
 /**
 * [背景尺寸，设置宽度，高度auto]
  */
 .b_s1(@px) {
-  -webkit-background-size: unit(@px / 37.5, rem) auto;
-  background-size: unit(@px / 37.5, rem) auto;
+  -webkit-background-size: unit(@px / @scale, rem) auto;
+  background-size: unit(@px / @scale, rem) auto;
 }
 
 .b_s2(@px) {
-  -webkit-background-size: auto unit(@px / 37.5, rem);
-  background-size: auto unit(@px / 37.5, rem);
+  -webkit-background-size: auto unit(@px / @scale, rem);
+  background-size: auto unit(@px / @scale, rem);
 }
 
 /*----- margin -----*/
 .mt(@px) {
-  margin-top: unit(@px / 37.5, rem);
+  margin-top: unit(@px / @scale, rem);
 }
 .mr(@px) {
-  margin-right: unit(@px / 37.5, rem);
+  margin-right: unit(@px / @scale, rem);
 }
 .mb(@px) {
-  margin-bottom: unit(@px / 37.5, rem);
+  margin-bottom: unit(@px / @scale, rem);
 }
 .ml(@px) {
-  margin-left: unit(@px / 37.5, rem);
+  margin-left: unit(@px / @scale, rem);
 }
 .m-t-l(@1px,@2px) {
-  margin: unit(@1px / 37.5, rem) unit(@2px / 37.5, rem);
+  margin: unit(@1px / @scale, rem) unit(@2px / @scale, rem);
 }
 .m-around(@1px,@2px,@3px,@4px) {
-  margin: unit(@1px / 37.5, rem) unit(@2px / 37.5, rem) unit(@3px / 37.5, rem)
-    unit(@4px / 37.5, rem);
+  margin: unit(@1px / @scale, rem) unit(@2px / @scale, rem) unit(@3px / @scale, rem)
+    unit(@4px / @scale, rem);
 }
 
 /*----- padding -----*/
 .p(@px) {
-  padding: unit(@px / 37.5, rem);
+  padding: unit(@px / @scale, rem);
 }
 .pt(@px) {
-  padding-top: unit(@px / 37.5, rem);
+  padding-top: unit(@px / @scale, rem);
 }
 .pr(@px) {
-  padding-right: unit(@px / 37.5, rem);
+  padding-right: unit(@px / @scale, rem);
 }
 .pb(@px) {
-  padding-bottom: unit(@px / 37.5, rem);
+  padding-bottom: unit(@px / @scale, rem);
 }
 .pl(@px) {
-  padding-left: unit(@px / 37.5, rem);
+  padding-left: unit(@px / @scale, rem);
 }
 .p-t-l(@1px,@2px) {
-  padding: unit(@1px / 37.5, rem) unit(@2px / 37.5, rem);
+  padding: unit(@1px / @scale, rem) unit(@2px / @scale, rem);
 }
 .p-around(@1px,@2px,@3px,@4px) {
-  padding: unit(@1px / 37.5, rem) unit(@2px / 37.5, rem) unit(@3px / 37.5, rem)
-    unit(@4px / 37.5, rem);
+  padding: unit(@1px / @scale, rem) unit(@2px / @scale, rem) unit(@3px / @scale, rem)
+    unit(@4px / @scale, rem);
 }
 
 /*----- Around -----*/

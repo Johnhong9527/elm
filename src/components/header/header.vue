@@ -17,6 +17,10 @@
           <span class="text">{{seller.supports[0].description}}</span>
         </div>
       </div>
+      <div class="support-count">
+        <span class="count">{{seller.supports.length}}个</span>
+        <i class="icon-keyboard_arrow_right"></i>
+      </div>
     </div>
     <div class="bulletin-wrapper"></div>
   </div>
@@ -42,6 +46,7 @@ export default {
   background: #000;
   .content-wrapper {
     font-size: 0;
+    position: relative;
     .pt(24);
     .pl(24);
     .pb(18);
@@ -112,6 +117,22 @@ export default {
           .lh(12);
           .fs(10);
         }
+      }
+    }
+    .support-count {
+      position: absolute;
+      .r(12);
+      .b(18);
+      .pl(8);
+      .pr(8);
+      .lh(24);
+      background-color: rgba(0, 0, 0, 0.2);
+      text-align: center;
+      .count {
+        .fs(10);
+      }
+      .icon-keyboard_arrow_right {
+        .fs(10);
       }
     }
   }
