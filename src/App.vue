@@ -36,20 +36,24 @@ export default {
     const self = this;
     axios.get('/api/seller').then((data) => {
       if (data.data.errno === ERR_OK) {
-        self.seller = data.data.seller;
+        self.seller = data.data.data;
       }
     });
     //
-    if ('geolocation' in navigator) {
+    /* if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition((position) => {
         alert(position.coords.latitude);
         alert(position.coords.longitude);
-        axios.get(`/elm/bgs/poi/reverse_geo_coding?latitude=${position.coords.latitude}&longitude=${position.coords.longitude}`).then((data) => {
+        axios
+        .get(`/elm/bgs/poi/reverse_geo_coding?latitude=${
+          position.coords.latitude
+          }&longitude=${position.coords.longitude}`)
+        .then((data) => {
           self.address = data.data;
           alert(`${data.data.name}`);
         });
       });
-    }
+    } */
   },
   components: { 'v-header': header },
 };

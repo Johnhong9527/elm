@@ -60,6 +60,10 @@
 /**
 * [背景尺寸，设置宽度，高度auto]
  */
+ .b_s(@1px,@2px){
+  -webkit-background-size: unit(@1px / @scale, rem) unit(@2px / @scale, rem);
+  background-size: unit(@1px / @scale, rem) unit(@2px / @scale, rem);
+ }
 .b_s1(@px) {
   -webkit-background-size: unit(@px / @scale, rem) auto;
   background-size: unit(@px / @scale, rem) auto;
@@ -139,5 +143,17 @@
     right: 0;
     bottom: 0;
     background-color: transparent;
+  }
+}
+
+.clearfix{
+  display: inline-block;
+  &:after{
+    display: block;
+    content:"";
+    height: 0;
+    line-height: 0;
+    clear: both;
+    visibility: hidden;
   }
 }

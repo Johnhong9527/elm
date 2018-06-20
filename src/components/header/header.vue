@@ -17,18 +17,39 @@
           <span class="text">{{seller.supports[0].description}}</span>
         </div>
       </div>
-      <div class="support-count">
+      <div class="support-count" @click='detailShow=true'>
         <span class="count">{{seller.supports.length}}个</span>
         <i class="icon-keyboard_arrow_right"></i>
       </div>
     </div>
-    <div class="bulletin-wrapper"></div>
+    <div class="bulletin-wrapper">
+      <span class="bulletin-title"></span><span class="bulletin-text">{{seller.bulletin}}</span>
+      <i class="icon-keyboard_arrow_right"></i>
+    </div>
+    <div class="background around">
+      <img :src="seller.avatar" width="100%" height="100%">
+    </div>
+    <div v-show="detailShow" class="detail">
+      <div class="detail-wrapper clearfix">
+        <div class="detail-main">
+          <h1 class="name">{{seller.name}}</h1>
+          <v-start :size='24' :score="seller.score"></v-start>
+        </div>
+      </div>
+      <div class="detail-close" @click='detailShow=false'>
+        <i class="icon-close"></i>
+      </div>
+    </div>
   </div>
 </template>
 <script>
+import start from '../start/start';
+
 export default {
   data() {
-    return {};
+    return {
+      detailShow: !false,
+    };
   },
   props: {
     seller: Object,
@@ -36,6 +57,7 @@ export default {
   created() {
     this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee'];
   },
+  components: { 'v-start': start },
 };
 </script>
 <style lang="less" scoped>
@@ -43,7 +65,9 @@ export default {
 @import url('../../common/css/mixin.less');
 .header {
   color: #fff;
-  background: #000;
+  background: rgba(7, 17, 27, 0.5);
+  position: relative;
+  overflow: hidden;
   .content-wrapper {
     font-size: 0;
     position: relative;
@@ -90,7 +114,7 @@ export default {
       .support {
         .icon {
           display: inline-block;
-          vertical-align: bottom;
+          vertical-align: top;
           .w(12);
           .h(12);
           .mr(4);
@@ -125,15 +149,96 @@ export default {
       .b(18);
       .pl(8);
       .pr(8);
+      .h(24);
       .lh(24);
+      .br(14);
       background-color: rgba(0, 0, 0, 0.2);
       text-align: center;
       .count {
+        vertical-align: top;
         .fs(10);
       }
       .icon-keyboard_arrow_right {
         .fs(10);
+        .lh(24);
+        .ml(2);
       }
+    }
+  }
+  .bulletin-wrapper {
+    .h(28);
+    .lh(28);
+    // padding: 0 22px 0 12px;
+    .pl(12);
+    .pr(22);
+    position: relative;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    background: rgba(7, 17, 27, 0.1);
+    .bulletin-title {
+      display: inline-block;
+      vertical-align: top;
+      .w(22);
+      .h(12);
+      .mt(8);
+      .bg_image('bulletin');
+      .b_s(22,12);
+      background-repeat: no-repeat;
+    }
+    .bulletin-text {
+      vertical-align: top;
+      .ml(2);
+      .mr(4);
+      // .fs(10);
+      font-size: 10px;
+      // display:inline-block;
+    }
+    .icon-keyboard_arrow_right {
+      position: absolute;
+      // .fs(10);
+      font-size: 10px;
+      .r(12);
+      .b(7);
+    }
+  }
+  .background {
+    position: absolute;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    filter: blur(10px);
+  }
+  .detail {
+    // overflow-y: scroll;
+    position: fixed;
+    z-index: 100;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    .detail-wrapper {
+      min-height: 100%;
+      width: 100%;
+      .detail-main {
+        .mt(64);
+        .pb(64);
+        .name {
+          .lh(16);
+          .fs(16);
+          font-weight: 700;
+          text-align: center;
+        }
+      }
+    }
+    .detail-close {
+      position: relative;
+      .w(32);
+      .h(32);
+      margin: unit(-64 / @scale, rem) auto 0 auto;
+      clear: both;
+      .fs(32);
     }
   }
 }
