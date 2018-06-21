@@ -23,7 +23,8 @@
       </div>
     </div>
     <div class="bulletin-wrapper">
-      <span class="bulletin-title"></span><span class="bulletin-text">{{seller.bulletin}}</span>
+      <span class="bulletin-title"></span>{{seller.bulletin}}
+      <!-- <span class="bulletin-text"></span> -->
       <i class="icon-keyboard_arrow_right"></i>
     </div>
     <div class="background around">
@@ -189,10 +190,11 @@ export default {
       }
     }
   }
+  font-size: 0;
   .bulletin-wrapper {
     .h(28);
     .lh(28);
-    // padding: 0 22px 0 12px;
+    font-size: 5px;
     .pl(12);
     .pr(22);
     position: relative;
@@ -206,21 +208,13 @@ export default {
       .w(22);
       .h(12);
       .mt(8);
+      .mr(2);
       .bg_image('bulletin');
       .b_s(22,12);
       background-repeat: no-repeat;
     }
-    .bulletin-text {
-      vertical-align: top;
-      .ml(2);
-      .mr(4);
-      // .fs(10);
-      font-size: 10px;
-      // display:inline-block;
-    }
     .icon-keyboard_arrow_right {
       position: absolute;
-      // .fs(10);
       font-size: 10px;
       .r(12);
       .b(7);
