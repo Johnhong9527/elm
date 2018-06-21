@@ -29,6 +29,7 @@ export default {
   data() {
     return {
       seller: null,
+      goods: null,
       address: null,
     };
   },
