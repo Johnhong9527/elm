@@ -29,26 +29,50 @@
     <div class="background around">
       <img :src="seller.avatar" width="100%" height="100%">
     </div>
-    <div v-show="detailShow" class="detail">
-      <div class="detail-wrapper clearfix">
-        <div class="detail-main">
-          <h1 class="name">{{seller.name}}</h1>
-          <v-start :size='24' :score="seller.score"></v-start>
+    <transition name='fade'>
+      <div v-show="detailShow" class="detail">
+        <div class="detail-wrapper clearfix">
+          <div class="detail-main">
+            <h1 class="name">{{seller.name}}</h1>
+            <div class="star-wrapper">
+              <s-star :size='48' :score="seller.score"></s-star>
+            </div>
+            <div class="title">
+              <div class="line"></div>
+              <div class="text">优惠信息</div>
+              <div class="line"></div>
+            </div>
+            <ul v-if="seller.supports" class="supports">
+              <li class="supports-item" v-for="(item,index) in seller.supports" :key='index'>
+                <span class="icon" :class="classMap[seller.supports[index].type]"></span>
+                <span class="text">{{
+                  seller.supports[index].description}}</span>
+              </li>
+            </ul>
+              <div class="title">
+              <div class="line"></div>
+              <div class="text">商家公告</div>
+              <div class="line"></div>
+            </div>
+            <div class="bulletin">
+              <p>{{seller.bulletin}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="detail-close" @click='detailShow=false'>
+          <i class="icon-close"></i>
         </div>
       </div>
-      <div class="detail-close" @click='detailShow=false'>
-        <i class="icon-close"></i>
-      </div>
-    </div>
+    </transition>
   </div>
 </template>
 <script>
-import start from '../start/start';
+import star from '../star/star';
 
 export default {
   data() {
     return {
-      detailShow: !false,
+      detailShow: false,
     };
   },
   props: {
@@ -57,7 +81,7 @@ export default {
   created() {
     this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee'];
   },
-  components: { 'v-start': start },
+  components: { 's-star': star },
 };
 </script>
 <style lang="less" scoped>
@@ -65,7 +89,7 @@ export default {
 @import url('../../common/css/mixin.less');
 .header {
   color: #fff;
-  background: rgba(7, 17, 27, 0.5);
+  // background: rgba(7, 17, 27, 0.8);
   position: relative;
   overflow: hidden;
   .content-wrapper {
@@ -210,14 +234,19 @@ export default {
     filter: blur(10px);
   }
   .detail {
-    // overflow-y: scroll;
     position: fixed;
     z-index: 100;
     top: 0;
     bottom: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
+    background: rgba(7, 17, 27, 0.8);
+    &.fade-enter-active, &.fade-leave-active {
+      transition: opacity .5s;
+    }
+    &.fade-enter, &.fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+      opacity: 0;
+    }
     .detail-wrapper {
       min-height: 100%;
       width: 100%;
@@ -229,6 +258,77 @@ export default {
           .fs(16);
           font-weight: 700;
           text-align: center;
+        }
+        .star-wrapper{
+          .mt(18);
+          .p-t-l(2, 0);
+          text-align: center;
+        }
+        .title{
+          display: flex;
+          align-items: center;
+          width: 80%;
+          .p-t-l(0,14);
+          margin: unit(30 / @scale, rem) auto unit(24 / @scale, rem) auto;
+          .line{
+            flex: 1;
+            position: relative;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+          }
+          .text{
+            .fs(14);
+            .lh(14);
+            .p-t-l(0,12);
+            text-align: center;
+            font-weight: 700;
+          }
+        }
+        .supports{
+          width: 80%;
+          margin: 0 auto;
+          .supports-item{
+            .p-t-l(0,12);
+            .mb(12);
+            font-size: 0;
+            &:last-child{
+              margin-bottom: 0;
+            }
+            .icon{
+              display: inline-block;
+              .w(16);
+              .h(16);
+              .fs(12);
+              .lh(12);
+              .b_s(16,16);
+              vertical-align: top;
+              .mr(6);
+              background-repeat:no-repeat;
+              &.decrease{
+                .bg_image('decrease_2');
+              }
+              &.discount{
+                .bg_image('discount_2');
+              }
+              &.special{
+                .bg_image('special_2');
+              }
+              &.invoice{
+                .bg_image('invoice_2');
+              }
+              &.guarantee{
+                .bg_image('guarantee_2');
+              }
+            }
+            .text{
+              .lh(16);
+              .fs(12);
+            }
+          }
+        }
+        .bulletin{
+          .fs(12);
+          .lh(24);
+          .p-t-l(0,48);
         }
       }
     }
