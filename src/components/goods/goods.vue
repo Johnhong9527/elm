@@ -1,6 +1,11 @@
 <template>
   <div class="goods">
-    <div class="menu-wrapper" v-if='goods[0]'>{{goods[0].name}}</div>
+    <div class="menu-wrapper" v-if='goods[0]'>
+      <ul>
+        <li v-for='item in goods'>{{item}}</li>
+      </ul>
+    </div>
+
     <div class="foods-wrapper"></div>
   </div>
 </template>
