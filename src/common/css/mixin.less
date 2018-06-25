@@ -75,6 +75,9 @@
 }
 
 /*----- margin -----*/
+.m(@px) {
+  margin: unit(@px / @scale, rem);
+}
 .mt(@px) {
   margin-top: unit(@px / @scale, rem);
 }

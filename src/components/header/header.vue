@@ -194,7 +194,7 @@ export default {
   .bulletin-wrapper {
     .h(28);
     .lh(28);
-    font-size: 5px;
+    .fs(10);
     .pl(12);
     .pr(22);
     position: relative;
@@ -215,7 +215,7 @@ export default {
     }
     .icon-keyboard_arrow_right {
       position: absolute;
-      font-size: 10px;
+      .fs(10);
       .r(12);
       .b(7);
     }
