@@ -2,17 +2,17 @@
   <div class="goods">
     <div class="menu-wrapper" v-if='goods[0]' ref="menuWrapper">
       <ul>
-        <li v-for='(item,index) in goods' :key='index' class="menu-item">
+        <!-- eslint-disable max-len -->
+        <li v-for='(item,index) in goods' :key='index' class="menu-item" :class="{'current': currentIndex === index}" @click='selectMenu(index, $event)' ref='menuList'>
           <span class="text">
-            <span v-show="item.type > 0" class="icon"
-              :class='classMap[item.type]'></span>{{item.name}}
+            <span v-show="item.type > 0" class="icon" :class='classMap[item.type]'></span>{{item.name}}
           </span>
         </li>
       </ul>
     </div>
     <div class="foods-wrapper" ref='foodsWrapper'>
       <ul>
-        <li v-for='(item,itemIndex) in goods' :key='itemIndex' class="good-list">
+        <li v-for='(item,itemIndex) in goods' :key='itemIndex' ref="foodsList" class="food-list">
           <h1 class="title">{{item.name}}</h1>
           <ul>
             <li v-for="(food,index) in item.foods" :key='index' class="food-item">
@@ -24,7 +24,8 @@
                 <p class="desc">{{food.description}}</p>
                 <div class="extra">
                   <span class="count">月售{{food.sellCount}}份</span>
-                  <span>好评率{{food.sellCount}}%</span>
+                  <span>好评率{{ food.sellCount}}%
+                  </span>
                 </div>
                 <div class="price">
                   <span class="now">￥{{food.price}}</span>
@@ -47,36 +48,80 @@ export default {
   data() {
     return {
       goods: [],
+      listHeight: [],
+      scrollY: 0,
     };
   },
-  props: {
-    seller: Object,
+  computed: {
+    currentIndex() {
+      let self = this;
+      for (let i = 0; i < self.listHeight.length; i += 1) {
+        const height1 = self.listHeight[i];
+        const height2 = self.listHeight[i + 1];
+        if (!height2 || (self.scrollY >= height1 && self.scrollY < height2)) {
+          return i;
+        }
+      }
+      return 0;
+    },
   },
   created() {
     const self = this;
     self.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee'];
-    axios.get('/api/goods').then((data) => {
-      console.log(data.data.data[0].name);
+    /* eslint-disable arrow-parens */
+    axios.get('/api/goods').then(data => {
       if (data.data.errno === ERR_OK) {
         self.goods = data.data.data;
-        self.initScroll();
+        self.$nextTick(() => {
+          self.initScroll();
+          self.calculateHeight();
+        });
       }
     });
   },
   methods: {
+    selectMenu(index, event) {
+      /* eslint-disable no-underscore-dangle */
+      if (!event._constructed) {
+        return;
+      }
+      let foodList = this.$refs.foodsList;
+      let el = foodList[index];
+      this.foodsScroll.scrollToElement(el, 300);
+    },
     tab(type) {
       console.log(type);
     },
     initScroll() {
-      console.log(this.$refs);
-      this.menuScroll = new BScroll(this.$refs.menuWrapper, {});
-      // this.foodsScroll = new BScroll(this.$refs.foodsWrapper, {});
+      let self = this;
+      self.menuScroll = new BScroll(self.$refs.menuWrapper, {
+        click: true,
+      });
+      self.foodsScroll = new BScroll(self.$refs.foodsWrapper, {
+        probeType: 3,
+      });
+      /* eslint-disable arrow-parens */
+      self.foodsScroll.on('scroll', pos => {
+        self.scrollY = Math.abs(Math.round(pos.y));
+      });
+    },
+    calculateHeight() {
+      let self = this;
+      let foodList = this.$refs.foodsList;
+      let height = 0;
+      self.listHeight.push(height);
+      for (let i = 0; i < foodList.length; i += 1) {
+        let item = foodList[i];
+        height += item.clientHeight;
+        self.listHeight.push(height);
+      }
     },
   },
 };
 </script>
 <style lang="less" scoped>
 @import url('../../common/css/common.less');
+
 .goods {
   display: flex;
   position: absolute;
@@ -90,11 +135,21 @@ export default {
     background-color: #f3f5f7;
     .menu-item {
       display: table;
-      .p-t-l(0,12);
+      .p-t-l(0, 12);
       .w(56);
       .h(54);
       .lh(14);
       .fs(12);
+      &.current {
+        position: relative;
+        z-index: 10;
+        .mt(-1);
+        background: #fff;
+        font-weight: 700;
+        .text {
+          .setNoLine();
+        }
+      }
       .icon {
         display: inline-block;
         vertical-align: top;
@@ -125,7 +180,7 @@ export default {
         .w(56);
         text-align: center;
         vertical-align: middle;
-        .setBottomLine(rgba(7,17,27,0.1));
+        .setBottomLine(rgba(7, 17, 27, 0.1));
         .fs(12);
       }
     }
@@ -145,7 +200,7 @@ export default {
       display: flex;
       .m(18);
       .pb(18);
-      .setBottomLine(rgba(0,0,0,0.1));
+      .setBottomLine(rgba(0, 0, 0, 0.1));
       &:last-child {
         margin-bottom: 0;
         .setNoLine();
@@ -160,14 +215,11 @@ export default {
       .content {
         flex: 1;
         .name {
-          .m-around(2,0,8,0);
+          .m-around(2, 0, 8, 0);
           .h(14);
           .lh(14);
           .fs(14);
           color: rgb(7, 17, 27);
-        }
-        .desc {
-          .mb(8);
         }
         .desc,
         .extra {
@@ -175,8 +227,12 @@ export default {
           .fs(10);
           color: rgb(147, 153, 159);
         }
+        .desc {
+          .mb(8);
+          .lh(12);
+        }
         .extra {
-          &.count {
+          .count {
             .mr(12);
           }
         }
