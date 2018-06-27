@@ -37,11 +37,13 @@
         </li>
       </ul>
     </div>
+    <s-shopcart></s-shopcart>
   </div>
 </template>
 <script>
 import axios from 'axios';
 import BScroll from 'better-scroll';
+import shopCart from 'components/shopcart/shopcart';
 
 const ERR_OK = 0;
 export default {
@@ -51,6 +53,9 @@ export default {
       listHeight: [],
       scrollY: 0,
     };
+  },
+  components: {
+    's-shopcart': shopCart,
   },
   computed: {
     currentIndex() {
