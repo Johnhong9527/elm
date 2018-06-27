@@ -48,6 +48,9 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'no-alert': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-    'prefer-const': process.env.NODE_ENV === 'production' ? 'error' : 'off'
+    'prefer-const': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'linebreak-style': 'off',
+    'quotes': 'off',
+    'comma-dangle': 'off'
   }
 }

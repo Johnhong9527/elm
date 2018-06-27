@@ -15,7 +15,7 @@
     <div v-if='address'>
       {{address}}
     </div>
-    <router-view/>
+    <router-view :seller="seller" />
   </div>
 </template>
 

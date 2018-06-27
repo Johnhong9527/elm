@@ -37,13 +37,13 @@
         </li>
       </ul>
     </div>
-    <s-shopcart></s-shopcart>
+    <s-shopcart v-if="seller" :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></s-shopcart>
   </div>
 </template>
 <script>
-import axios from 'axios';
-import BScroll from 'better-scroll';
-import shopCart from 'components/shopcart/shopcart';
+import axios from "axios";
+import BScroll from "better-scroll";
+import shopCart from "components/shopcart/shopcart";
 
 const ERR_OK = 0;
 export default {
@@ -55,8 +55,9 @@ export default {
     };
   },
   components: {
-    's-shopcart': shopCart,
+    "s-shopcart": shopCart,
   },
+  props: { seller: Object },
   computed: {
     currentIndex() {
       let self = this;
@@ -68,13 +69,13 @@ export default {
         }
       }
       return 0;
-    },
+    }
   },
   created() {
     const self = this;
-    self.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee'];
+    self.classMap = ["decrease", "discount", "special", "invoice", "guarantee"];
     /* eslint-disable arrow-parens */
-    axios.get('/api/goods').then(data => {
+    axios.get("/api/goods").then(data => {
       if (data.data.errno === ERR_OK) {
         self.goods = data.data.data;
         self.$nextTick(() => {
@@ -100,13 +101,13 @@ export default {
     initScroll() {
       let self = this;
       self.menuScroll = new BScroll(self.$refs.menuWrapper, {
-        click: true,
+        click: true
       });
       self.foodsScroll = new BScroll(self.$refs.foodsWrapper, {
-        probeType: 3,
+        probeType: 3
       });
       /* eslint-disable arrow-parens */
-      self.foodsScroll.on('scroll', pos => {
+      self.foodsScroll.on("scroll", pos => {
         self.scrollY = Math.abs(Math.round(pos.y));
       });
     },
@@ -125,7 +126,7 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-@import url('../../common/css/common.less');
+@import url("../../common/css/common.less");
 
 .goods {
   display: flex;
@@ -165,19 +166,19 @@ export default {
         .b_s2(12);
         background-repeat: no-repeat;
         &.decrease {
-          .bg_image('decrease_3');
+          .bg_image("decrease_3");
         }
         &.discount {
-          .bg_image('discount_3');
+          .bg_image("discount_3");
         }
         &.guarantee {
-          .bg_image('guarantee_3');
+          .bg_image("guarantee_3");
         }
         &.invoice {
-          .bg_image('invoice_3');
+          .bg_image("invoice_3");
         }
         &.special {
-          .bg_image('special_3');
+          .bg_image("special_3");
         }
       }
       .text {
