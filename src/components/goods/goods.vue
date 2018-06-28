@@ -2,20 +2,26 @@
   <div class="goods">
     <div class="menu-wrapper" v-if='goods[0]' ref="menuWrapper">
       <ul>
-        <!-- eslint-disable max-len -->
-        <li v-for='(item,index) in goods' :key='index' class="menu-item" :class="{'current': currentIndex === index}" @click='selectMenu(index, $event)' ref='menuList'>
+        <li v-for='(item,index) in goods'
+          :key='index' class="menu-item"
+          :class="{'current': currentIndex === index}"
+          @click='selectMenu(index, $event)' ref='menuList'>
           <span class="text">
-            <span v-show="item.type > 0" class="icon" :class='classMap[item.type]'></span>{{item.name}}
+            <span v-show="item.type > 0" class="icon"
+              :class='classMap[item.type]'></span>{{item.name}}
           </span>
         </li>
       </ul>
     </div>
     <div class="foods-wrapper" ref='foodsWrapper'>
       <ul>
-        <li v-for='(item,itemIndex) in goods' :key='itemIndex' ref="foodsList" class="food-list">
+        <li v-for='(item,itemIndex) in goods'
+          :key='itemIndex'
+          ref="foodsList" class="food-list">
           <h1 class="title">{{item.name}}</h1>
           <ul>
-            <li v-for="(food,index) in item.foods" :key='index' class="food-item">
+            <li v-for="(food,index) in item.foods"
+              :key='index' class="food-item">
               <div class="icon">
                 <img :src="food.icon">
               </div>
@@ -31,19 +37,26 @@
                   <span class="now">￥{{food.price}}</span>
                   <span class="old" v-show='food.oldPrics'>￥{{food.oldPrics}}</span>
                 </div>
+                <div class="cartcontrol-wrapper">
+                  <s-cartcontrol v-if="food" :food='food'></s-cartcontrol>
+                </div>
               </div>
             </li>
           </ul>
         </li>
       </ul>
     </div>
-    <s-shopcart v-if="seller" :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></s-shopcart>
+    <s-shopcart v-if="seller"
+      :delivery-price="seller.deliveryPrice"
+      :min-price="seller.minPrice"
+      :selectFoods='selectFoods'></s-shopcart>
   </div>
 </template>
 <script>
 import axios from "axios";
 import BScroll from "better-scroll";
 import shopCart from "components/shopcart/shopcart";
+import cartcontrol from "components/cartcontrol/cartcontrol";
 
 const ERR_OK = 0;
 export default {
@@ -51,11 +64,12 @@ export default {
     return {
       goods: [],
       listHeight: [],
-      scrollY: 0,
+      scrollY: 0
     };
   },
   components: {
     "s-shopcart": shopCart,
+    "s-cartcontrol": cartcontrol
   },
   props: { seller: Object },
   computed: {
@@ -69,6 +83,19 @@ export default {
         }
       }
       return 0;
+    },
+    selectFoods() {
+      let foods = [];
+      /* eslint-disable arrow-parens */
+      this.goods.forEach(good => {
+        /* eslint-disable arrow-parens */
+        good.foods.forEach(food => {
+          if (food.count) {
+            foods.push(food);
+          }
+        });
+      });
+      return foods;
     }
   },
   created() {
@@ -104,7 +131,8 @@ export default {
         click: true
       });
       self.foodsScroll = new BScroll(self.$refs.foodsWrapper, {
-        probeType: 3
+        probeType: 3,
+        click: true
       });
       /* eslint-disable arrow-parens */
       self.foodsScroll.on("scroll", pos => {
@@ -121,8 +149,8 @@ export default {
         height += item.clientHeight;
         self.listHeight.push(height);
       }
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="less" scoped>
@@ -255,6 +283,11 @@ export default {
             .fs(10);
             color: rgb(147, 153, 159);
           }
+        }
+        .cartcontrol-wrapper {
+          position: absolute;
+          right: 0;
+          .b(12);
         }
       }
     }
