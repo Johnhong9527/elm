@@ -1,6 +1,6 @@
 <template>
   <div class="shopcart">
-    <div class="content">
+    <div class="content" @click="toggleList">
       <div class="content-left">
         <div class="logo-wrapper">
           <div class="logo" :class="{'highlight':totalCount>0}">
@@ -30,9 +30,33 @@
         </transition>
       </div>
     </div>
+    <transition name="fold">
+      <div class="shopcart-list" v-show="listShow">
+        <div class="list-header">
+          <h1 class="title">购物车</h1>
+          <span class="empty">清空</span>
+        </div>
+        <div class="list-content" ref="listContent">
+          <ul>
+            <li class="food" v-for="(food, index) in selectFoods" :key="index">
+              <span class="name">{{food.name}}</span>
+              <div class="price">
+                <span>￥{{food.price * food.count}}</span>
+              </div>
+              <div class="cartcontrol-wrapper">
+                <cartcontrol :food="food"></cartcontrol>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 <script>
+import BScroll from "better-scroll";
+import cartcontrol from "components/cartcontrol/cartcontrol";
+
 export default {
   props: {
     selectFoods: {
@@ -60,7 +84,8 @@ export default {
         { show: false },
         { show: false }
       ],
-      dropBalls: []
+      dropBalls: [],
+      fold: false,
     };
   },
   computed: {
@@ -94,6 +119,22 @@ export default {
         return "not-enough";
       }
       return "enough";
+    },
+    listShow() {
+      let self = this;
+      if (!self.totalCount) {
+        self.fold = true;
+        return false;
+      }
+      let show = !self.fold;
+      if (show) {
+        self.$nextTick(() => {
+          self.scroll = new BScroll(self.$refs.listContent, {
+            click: true
+          });
+        });
+      }
+      return show;
     }
   },
   methods: {
@@ -148,7 +189,17 @@ export default {
         ball.show = false;
         el.style.display = "none";
       }
+    },
+    toggleList() {
+      let self = this;
+      if (!self.totalCount) {
+        return;
+      }
+      self.fold = !self.fold;
     }
+  },
+  components: {
+    cartcontrol
   }
 };
 </script>
@@ -273,6 +324,67 @@ export default {
         border-radius: 50%;
         background-color: rgb(0, 160, 220);
         transition: all @ballTime linear;
+      }
+    }
+  }
+  .shopcart-list {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+    transition: all 0.3s linear;
+    transform: translate3d(0,-100%,0);
+    &.fold-enter-active, &.fold-leave-active {}
+    &.fold-enter, &.fold-leave-to{
+      transform: translate3d(0,0,0);
+    }
+    .list-header {
+      .h(40);
+      .lh(40);
+      .p-t-l(0,18);
+      border-bottom: 1px solid rgba(7,17,27,0.1);
+      background-color: #f3f5f7;
+      .title {
+        float: left;
+        .fs(14);
+        color: rgb(7,17,27);
+      }
+      .empty {
+        float: right;
+        .fs(12);
+        color: rgb(0,160,220);
+      }
+    }
+    .list-content {
+      .p-t-l(0, 18);
+      max-height: unit(217 / @scale, rem);
+      overflow: hidden;
+      background-color: #fff;
+      .food {
+        position: relative;
+        .p-t-l(12, 0);
+        box-sizing: border-box;
+        .setBottomLine(rgba(7, 17, 27, 0.1));
+        .name {
+          .lh(24);
+          .fs(14);
+          color: rgb(7, 17, 27);
+        }
+        .price {
+          position: absolute;
+          .r(99);
+          .b(12);
+          .lh(24);
+          .fs(14);
+          font-weight: 700;
+          color: rgb(200,20,20);
+        }
+        .cartcontrol-wrapper {
+          position: absolute;
+          right: 0;
+          .b(6);
+        }
       }
     }
   }
