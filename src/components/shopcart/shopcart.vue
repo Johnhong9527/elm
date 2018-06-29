@@ -9,13 +9,25 @@
           <div class="num" v-show="totalCount>0">{{totalCount}}</div>
         </div>
         <div class="price" :class="{'highlight':totalCount>0}">￥{{totalPrice}}元</div>
-        <div class="desc">{{deliveryPrice}}元</div>
+        <div class="desc">另需配送费￥{{deliveryPrice}}元</div>
       </div>
       <div class="content-right">
         <div class="pay" :class="payClass">
         <!-- <div class="pay" :class="{'enough':this.totalPrice >= this.minPrice}"> -->
           {{payDesc}}
         </div>
+      </div>
+    </div>
+    <div class="ball-container">
+      <div v-for="(ball,index) in balls" :key="index">
+        <transition name="drop"
+        @before-enter='beforeDrop'
+        @enter='dropping'
+        @after-enter="afterDrop">
+          <div class="ball" v-show="ball.show">
+            <div class="inner inner-hook"></div>
+          </div>
+        </transition>
       </div>
     </div>
   </div>
@@ -38,6 +50,18 @@ export default {
       type: Number
     },
     minPrice: Number
+  },
+  data() {
+    return {
+      balls: [
+        { show: false },
+        { show: false },
+        { show: false },
+        { show: false },
+        { show: false }
+      ],
+      dropBalls: []
+    };
   },
   computed: {
     totalPrice() {
@@ -71,6 +95,60 @@ export default {
       }
       return "enough";
     }
+  },
+  methods: {
+    drop(el) {
+      // 获取位置
+      for (let i = 0; i < this.balls.length; i += 1) {
+        let ball = this.balls[i];
+        if (!ball.show) {
+          ball.show = true;
+          ball.el = el;
+          this.dropBalls.push(ball);
+          return;
+        }
+      }
+    },
+    // 过渡
+    /* eslint-disable no-unused-vars */
+    beforeDrop(el) {
+      let count = this.balls.length;
+      /* eslint-disable no-plusplus */
+      while (count--) {
+        let ball = this.balls[count];
+        if (ball.show) {
+          let rect = ball.el.getBoundingClientRect();
+          let x = rect.left - 32;
+          let y = -(window.innerHeight - rect.top - 22);
+          /* eslint-disable no-param-reassign */
+          el.style.display = "";
+          el.style.webkitTransform = `translate3d(0,${y}px,0)`;
+          el.style.transform = `translate3d(0,${y}px,0)`;
+          let inner = el.getElementsByClassName("inner-hook")[0];
+          inner.style.webkitTransform = `translate3d(${x}px,0,0)`;
+          inner.style.transform = `translate3d(${x}px,0,0)`;
+        }
+      }
+    },
+    dropping(el, done) {
+      /* eslint-disable no-unused-vars */
+      let rf = el.offsetHeight;
+      this.$nextTick(() => {
+        el.style.webkitTransform = "translate3d(0,0,0)";
+        el.style.transform = "translate3d(0,0,0)";
+        let inner = el.getElementsByClassName("inner-hook")[0];
+        inner.style.webkitTransform = "translate3d(0,0,0)";
+        inner.style.transform = "translate3d(0,0,0)";
+        el.addEventListener("transitionend", done);
+      });
+    },
+    afterDrop(el) {
+      let ball = this.dropBalls.shift();
+      if (ball) {
+        ball.show = false;
+        el.style.display = "none";
+      }
+    }
   }
 };
 </script>
@@ -102,6 +180,7 @@ export default {
         vertical-align: top;
         border-radius: 50%;
         background: #141d27;
+        font-size: 0;
         .logo {
           width: 100%;
           height: 100%;
@@ -124,15 +203,16 @@ export default {
           position: absolute;
           top: 0;
           right: 0;
-          .w(24);
-          .h(16);
-          .lh(17.5);
-          vertical-align: text-bottom;
+          top: 0;
+          right: 0;
+          width: 24px;
+          height: 16px;
+          line-height: 17px;
           text-align: center;
-          .br(16);
+          border-radius: 16px;
           .fs(9);
           font-weight: 700;
-          color: white;
+          color: #fff;
           background-color: rgb(240, 20, 20);
           box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4);
         }
@@ -179,6 +259,23 @@ export default {
           background-color: #00b43c;
           color: #fff;
         }
+      }
+    }
+  }
+  .ball-container {
+    @ballTime: 0.5s;
+    .ball {
+      position: fixed;
+      .l(32);
+      .b(22);
+      z-index: 200;
+      transition: all @ballTime cubic-bezier(0.49, -0.29, 0.75, 0.41);
+      .inner {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background-color: rgb(0, 160, 220);
+        transition: all @ballTime linear;
       }
     }
   }

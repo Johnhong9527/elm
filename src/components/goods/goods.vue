@@ -38,7 +38,7 @@
                   <span class="old" v-show='food.oldPrics'>￥{{food.oldPrics}}</span>
                 </div>
                 <div class="cartcontrol-wrapper">
-                  <s-cartcontrol v-if="food" :food='food'></s-cartcontrol>
+                  <s-cartcontrol @add='addFood' v-if="food" :food='food'></s-cartcontrol>
                 </div>
               </div>
             </li>
@@ -47,6 +47,7 @@
       </ul>
     </div>
     <s-shopcart v-if="seller"
+      ref='shopcart'
       :delivery-price="seller.deliveryPrice"
       :min-price="seller.minPrice"
       :selectFoods='selectFoods'></s-shopcart>
@@ -121,6 +122,15 @@ export default {
       let foodList = this.$refs.foodsList;
       let el = foodList[index];
       this.foodsScroll.scrollToElement(el, 300);
+    },
+    addFood(target) {
+      this._drop(target);
+    },
+    _drop(target) {
+      // 体验优化,异步执行下落动画
+      this.$nextTick(() => {
+        this.$refs.shopcart.drop(target);
+      });
     },
     tab(type) {
       console.log(type);

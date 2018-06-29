@@ -29,6 +29,7 @@ export default {
       } else {
         this.food.count += 1;
       }
+      this.$emit("add", event.target);
     },
     decreaseCart(event) {
       /* eslint-disable no-underscore-dangle */
