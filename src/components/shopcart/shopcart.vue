@@ -165,7 +165,6 @@ export default {
   .content {
     display: flex;
     background: #141d27;
-    // font-size: 0;
     .content-left {
       flex: 1;
       .logo-wrapper {
@@ -180,7 +179,6 @@ export default {
         vertical-align: top;
         border-radius: 50%;
         background: #141d27;
-        font-size: 0;
         .logo {
           width: 100%;
           height: 100%;
@@ -205,16 +203,16 @@ export default {
           right: 0;
           top: 0;
           right: 0;
-          width: 24px;
-          height: 16px;
-          line-height: 17px;
+          .w(24);
+          .h(16);
+          .lh(17);
           text-align: center;
-          border-radius: 16px;
+          .br(16);
           .fs(9);
           font-weight: 700;
           color: #fff;
           background-color: rgb(240, 20, 20);
-          box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4);
+          box-shadow: 0 unit(4 / @scale, rem) unit(8 / @scale, rem)  0 rgba(0, 0, 0, 0.4);
         }
       }
       .price {
@@ -222,7 +220,6 @@ export default {
         vertical-align: top;
         .mt(12);
         .lh(24);
-        line-height: 24px;
         .pr(12);
         box-sizing: border-box;
         .setRightLine(rgba(255,255,255,0.1));
@@ -271,8 +268,8 @@ export default {
       z-index: 200;
       transition: all @ballTime cubic-bezier(0.49, -0.29, 0.75, 0.41);
       .inner {
-        width: 16px;
-        height: 16px;
+        .w(16);
+        .h(16);
         border-radius: 50%;
         background-color: rgb(0, 160, 220);
         transition: all @ballTime linear;
