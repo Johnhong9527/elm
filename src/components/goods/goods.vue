@@ -1,27 +1,21 @@
 <template>
+  <!-- eslint-disable max-len -->
   <div class="goods">
     <div class="menu-wrapper" v-if='goods[0]' ref="menuWrapper">
       <ul>
-        <li v-for='(item,index) in goods'
-          :key='index' class="menu-item"
-          :class="{'current': currentIndex === index}"
-          @click='selectMenu(index, $event)' ref='menuList'>
+        <li v-for='(item,index) in goods' :key='index' class="menu-item" :class="{'current': currentIndex === index}" @click='selectMenu(index, $event)' ref='menuList'>
           <span class="text">
-            <span v-show="item.type > 0" class="icon"
-              :class='classMap[item.type]'></span>{{item.name}}
+            <span v-show="item.type > 0" class="icon" :class='classMap[item.type]'></span>{{item.name}}
           </span>
         </li>
       </ul>
     </div>
     <div class="foods-wrapper" ref='foodsWrapper'>
       <ul>
-        <li v-for='(item,itemIndex) in goods'
-          :key='itemIndex'
-          ref="foodsList" class="food-list">
+        <li v-for='(item,itemIndex) in goods' :key='itemIndex' ref="foodsList" class="food-list">
           <h1 class="title">{{item.name}}</h1>
           <ul>
-            <li v-for="(food,index) in item.foods"
-              :key='index' class="food-item">
+            <li @click="selectFoodItem(food, $event)" v-for="(food,index) in item.foods" :key='index' class="food-item">
               <div class="icon">
                 <img :src="food.icon">
               </div>
@@ -35,7 +29,7 @@
                 </div>
                 <div class="price">
                   <span class="now">￥{{food.price}}</span>
-                  <span class="old" v-show='food.oldPrics'>￥{{food.oldPrics}}</span>
+                  <span class="old" v-show='food.oldPrice'>￥{{food.oldPrice}}</span>
                 </div>
                 <div class="cartcontrol-wrapper">
                   <s-cartcontrol @add='addFood' v-if="food" :food='food'></s-cartcontrol>
@@ -46,11 +40,8 @@
         </li>
       </ul>
     </div>
-    <s-shopcart v-if="seller"
-      ref='shopcart'
-      :delivery-price="seller.deliveryPrice"
-      :min-price="seller.minPrice"
-      :selectFoods='selectFoods'></s-shopcart>
+    <s-shopcart v-if="seller" ref='shopcart' :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice" :selectFoods='selectFoods'></s-shopcart>
+    <s-food ref='sFood' :food='selectFood'></s-food>
   </div>
 </template>
 <script>
@@ -58,6 +49,7 @@ import axios from "axios";
 import BScroll from "better-scroll";
 import shopCart from "components/shopcart/shopcart";
 import cartcontrol from "components/cartcontrol/cartcontrol";
+import sFood from "components/food/food";
 
 const ERR_OK = 0;
 export default {
@@ -65,12 +57,14 @@ export default {
     return {
       goods: [],
       listHeight: [],
-      scrollY: 0
+      scrollY: 0,
+      selectFood: {}
     };
   },
   components: {
     "s-shopcart": shopCart,
-    "s-cartcontrol": cartcontrol
+    "s-cartcontrol": cartcontrol,
+    "s-food": sFood
   },
   props: { seller: Object },
   computed: {
@@ -122,6 +116,14 @@ export default {
       let foodList = this.$refs.foodsList;
       let el = foodList[index];
       this.foodsScroll.scrollToElement(el, 300);
+    },
+    selectFoodItem(food, event) {
+      /* eslint-disable no-underscore-dangle */
+      if (!event._constructed) {
+        return;
+      }
+      this.selectFood = food;
+      this.$refs.sFood.show();
     },
     addFood(target) {
       this._drop(target);

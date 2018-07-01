@@ -1,4 +1,5 @@
 <template>
+  <!-- eslint-disable max-len -->
   <div class="shopcart">
     <div class="content" @click="toggleList">
       <div class="content-left">
@@ -20,8 +21,7 @@
     </div>
     <div class="ball-container">
       <div v-for="(ball,index) in balls" :key="index">
-        <transition name="drop" @before-enter='beforeDrop'
-        @enter='dropping' @after-enter="afterDrop">
+        <transition name="drop" @before-enter='beforeDrop' @enter='dropping' @after-enter="afterDrop">
           <div class="ball" v-show="ball.show">
             <div class="inner inner-hook"></div>
           </div>
@@ -32,7 +32,7 @@
       <div class="shopcart-list" v-show="listShow">
         <div class="list-header">
           <h1 class="title">购物车</h1>
-          <span class="empty">清空</span>
+          <span class="empty" @click="empty">清空</span>
         </div>
         <div class="list-content" ref="listContent">
           <ul>
@@ -151,6 +151,13 @@ export default {
           return;
         }
       }
+    },
+    empty() {
+      /* eslint-disable arrow-parens */
+      this.selectFoods.forEach(food => {
+        /* eslint-disable no-param-reassign */
+        food.count = 0;
+      });
     },
     // 过渡
     /* eslint-disable no-unused-vars */
