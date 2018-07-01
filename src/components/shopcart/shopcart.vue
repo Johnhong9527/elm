@@ -13,17 +13,15 @@
       </div>
       <div class="content-right">
         <div class="pay" :class="payClass">
-        <!-- <div class="pay" :class="{'enough':this.totalPrice >= this.minPrice}"> -->
+          <!-- <div class="pay" :class="{'enough':this.totalPrice >= this.minPrice}"> -->
           {{payDesc}}
         </div>
       </div>
     </div>
     <div class="ball-container">
       <div v-for="(ball,index) in balls" :key="index">
-        <transition name="drop"
-        @before-enter='beforeDrop'
-        @enter='dropping'
-        @after-enter="afterDrop">
+        <transition name="drop" @before-enter='beforeDrop'
+        @enter='dropping' @after-enter="afterDrop">
           <div class="ball" v-show="ball.show">
             <div class="inner inner-hook"></div>
           </div>
@@ -85,7 +83,7 @@ export default {
         { show: false }
       ],
       dropBalls: [],
-      fold: false,
+      fold: false
     };
   },
   computed: {
@@ -129,9 +127,13 @@ export default {
       let show = !self.fold;
       if (show) {
         self.$nextTick(() => {
-          self.scroll = new BScroll(self.$refs.listContent, {
-            click: true
-          });
+          if (!this.scroll) {
+            self.scroll = new BScroll(self.$refs.listContent, {
+              click: true
+            });
+          } else {
+            this.scroll.refresh();
+          }
         });
       }
       return show;
@@ -263,7 +265,8 @@ export default {
           font-weight: 700;
           color: #fff;
           background-color: rgb(240, 20, 20);
-          box-shadow: 0 unit(4 / @scale, rem) unit(8 / @scale, rem)  0 rgba(0, 0, 0, 0.4);
+          box-shadow: 0 unit(4 / @scale, rem) unit(8 / @scale, rem) 0
+            rgba(0, 0, 0, 0.4);
         }
       }
       .price {
@@ -334,26 +337,29 @@ export default {
     width: 100%;
     z-index: -1;
     transition: all 0.3s linear;
-    transform: translate3d(0,-100%,0);
-    &.fold-enter-active, &.fold-leave-active {}
-    &.fold-enter, &.fold-leave-to{
-      transform: translate3d(0,0,0);
+    transform: translate3d(0, -100%, 0);
+    &.fold-enter-active,
+    &.fold-leave-active {
+    }
+    &.fold-enter,
+    &.fold-leave-to {
+      transform: translate3d(0, 0, 0);
     }
     .list-header {
       .h(40);
       .lh(40);
       .p-t-l(0,18);
-      border-bottom: 1px solid rgba(7,17,27,0.1);
+      border-bottom: 1px solid rgba(7, 17, 27, 0.1);
       background-color: #f3f5f7;
       .title {
         float: left;
         .fs(14);
-        color: rgb(7,17,27);
+        color: rgb(7, 17, 27);
       }
       .empty {
         float: right;
         .fs(12);
-        color: rgb(0,160,220);
+        color: rgb(0, 160, 220);
       }
     }
     .list-content {
@@ -378,7 +384,7 @@ export default {
           .lh(24);
           .fs(14);
           font-weight: 700;
-          color: rgb(200,20,20);
+          color: rgb(200, 20, 20);
         }
         .cartcontrol-wrapper {
           position: absolute;
