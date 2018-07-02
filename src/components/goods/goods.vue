@@ -32,7 +32,7 @@
                   <span class="old" v-show='food.oldPrice'>￥{{food.oldPrice}}</span>
                 </div>
                 <div class="cartcontrol-wrapper">
-                  <s-cartcontrol @add='addFood' v-if="food" :food='food'></s-cartcontrol>
+                  <s-cartcontrol @add='addFood($event)' v-if="food" :food='food'></s-cartcontrol>
                 </div>
               </div>
             </li>
@@ -126,6 +126,11 @@ export default {
       this.$refs.sFood.show();
     },
     addFood(target) {
+      /* eslint-disable no-underscore-dangle */
+      if (!event._constructed) {
+        return;
+      }
+      event.stopPropagation();
       this._drop(target);
     },
     _drop(target) {

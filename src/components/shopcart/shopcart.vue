@@ -42,7 +42,7 @@
                 <span>￥{{food.price * food.count}}</span>
               </div>
               <div class="cartcontrol-wrapper">
-                <cartcontrol :food="food"></cartcontrol>
+                <cartcontrol @add="addFood" :food="food"></cartcontrol>
               </div>
             </li>
           </ul>
@@ -158,6 +158,9 @@ export default {
         /* eslint-disable no-param-reassign */
         food.count = 0;
       });
+    },
+    addFood(target) {
+      this.drop(target);
     },
     // 过渡
     /* eslint-disable no-unused-vars */

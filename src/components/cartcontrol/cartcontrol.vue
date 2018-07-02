@@ -37,6 +37,7 @@ export default {
       if (!event._constructed) {
         return;
       }
+      event.stopPropagation();
       if (this.food.count) {
         this.food.count -= 1;
       }

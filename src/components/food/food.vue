@@ -15,12 +15,12 @@
             <span class="rating">好评率{{food.rating}}%</span>
           </div>
           <div class="price">
-            <span class="now">{{food.price}}</span>
+            <span class="now">￥{{food.price}}</span>
             <span class="old" v-show="food.oldPrice">￥{{food.oldPrice}}</span>
           </div>
         </div>
         <div class="cartcontrol-wrapper">
-          <s-cartcontrol :food='food'></s-cartcontrol>
+          <s-cartcontrol @add='addFood' :food='food'></s-cartcontrol>
         </div>
       </div>
     </div>
@@ -59,6 +59,9 @@ export default {
     },
     hide() {
       this.showFlag = false;
+    },
+    addFood() {
+      
     }
   }
 };
