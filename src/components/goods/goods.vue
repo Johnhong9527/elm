@@ -138,9 +138,6 @@ export default {
         this.$refs.shopcart.drop(target);
       });
     },
-    tab(type) {
-      console.log(type);
-    },
     initScroll() {
       let self = this;
       self.menuScroll = new BScroll(self.$refs.menuWrapper, {

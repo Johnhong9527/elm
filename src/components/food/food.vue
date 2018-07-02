@@ -1,4 +1,5 @@
 <template>
+  <!-- eslint-disable max-len  -->
   <transition name='move'>
     <div class="food" v-show="showFlag" ref="food">
       <div class="food-content">
@@ -18,13 +19,12 @@
             <span class="now">￥{{food.price}}</span>
             <span class="old" v-show="food.oldPrice">￥{{food.oldPrice}}</span>
           </div>
-           <div class="cartcontrol-wrapper">
-          <s-cartcontrol @add='addFood($event)' :food='food'></s-cartcontrol>
-        </div>
-        <transition name='fade'>
-          <div @click.stop.prevent='addFirst(food,$event)' class="buy"
-            v-show="!food.count || food.count === 0">加入购物车</div>
-        </transition>
+          <div class="cartcontrol-wrapper">
+            <s-cartcontrol @add='addFood($event)' :food='food'></s-cartcontrol>
+          </div>
+          <transition name='fade'>
+            <div @click.stop.prevent='addFirst(food,$event)' class="buy" v-show="!food.count || food.count === 0">加入购物车</div>
+          </transition>
         </div>
         <s-split v-show="food.info"></s-split>
         <div class="info" v-show="food.info">
@@ -34,12 +34,25 @@
         <s-split v-show="food.info"></s-split>
         <div class="rating">
           <h1 class="title">商品评价</h1>
-          <s-ratingselect
-            :selectType="selectType"
-            @select="selectRating"
-            @toggle="toggleContent"
-            :onlyContent='onlyContent'
-            :desc="desc" :ratings='food.ratings' ></s-ratingselect>
+          <s-ratingselect :selectType="selectType" @select="selectRating" @toggle="toggleContent" :onlyContent='onlyContent' :desc="desc" :ratings='food.ratings'></s-ratingselect>
+          <div class="rating-wrapper">
+            <ul v-show="food.ratings && food.ratings.length">
+              <li v-show='needShow(rating.rateType,rating.text)' v-for="(rating, index) in food.ratings" :key='index' class="rating-item">
+                <div class="user">
+                  <span class="name">{{rating.username}}</span>
+                  <img class="avatar" :src="rating.avatar" width="12" height="12">
+                </div>
+                <div class="time">
+                  {{rating.rateTime | formatDate}}
+                </div>
+                <p class="text">
+                  <span :class="{'icon-thumb_up':rating.rateType === 0,
+                    'icon-thumb_down':rating.rateType === 1}"></span>{{rating.text}}
+                </p>
+              </li>
+            </ul>
+            <div class="no-rating" v-show='!food.ratings || !food.ratings.length'>暂无评价</div>
+          </div>
         </div>
       </div>
     </div>
@@ -47,6 +60,7 @@
 </template>
 <script>
 import BScroll from "better-scroll";
+import formatDate from "common/js/date";
 import cartcontrol from "components/cartcontrol/cartcontrol";
 import split from "components/split/split";
 import ratingselect from "components/ratingselect/ratingselect";
@@ -59,7 +73,7 @@ export default {
     return {
       showFlag: false,
       selectType: ALL,
-      onlyContent: true,
+      onlyContent: false,
       desc: {
         all: "全部",
         positive: "推荐",
@@ -70,6 +84,12 @@ export default {
   props: {
     food: {
       type: Object
+    }
+  },
+  filters: {
+    formatDate(time) {
+      let date = new Date(time);
+      return formatDate(date, "yyyy-MM-dd hh:mm");
     }
   },
   components: {
@@ -117,6 +137,15 @@ export default {
       }
       this.$emit("add", event.target);
       this.$set(this.food, "count", 1);
+    },
+    needShow(type, text) {
+      if (this.onlyContent && !text) {
+        return false;
+      }
+      if (this.selectType === ALL) {
+        return true;
+      }
+      return type === this.selectType;
     }
   }
 };
@@ -255,6 +284,59 @@ export default {
       .ml(18);
       .fs(14);
       color: rgb(7, 17, 27);
+    }
+    .rating-wrapper {
+      .p-t-l(0,18);
+      .rating-item {
+        position: relative;
+        .p-t-l(16,0);
+        .setBottomLine(rgba(7,17,27,0.1));
+        .user {
+          position: absolute;
+          right: 0;
+          .t(16);
+          .lh(12);
+          font-size: 0;
+          .name {
+            display: inline-block;
+            vertical-align: top;
+            .mr(6);
+            .fs(10);
+            color: rgb(147, 153, 159);
+          }
+          .avatar {
+            border-radius: 50%;
+          }
+        }
+        .time {
+          .mb(6);
+          .lh(12);
+          .fs(10);
+          color: rgb(147, 153, 159);
+        }
+        .text {
+          .lh(16);
+          .fs(12);
+          color: rgb(7, 17, 27);
+          .icon-thumb_up,
+          .icon-thumb_down {
+            .mr(4);
+            .lh(16);
+            .fs(12);
+          }
+          .icon-thumb_up {
+            color: rgb(0, 160, 220);
+          }
+          .icon-thumb_down {
+            color: rgb(147, 153, 159);
+          }
+        }
+      }
+      .no-rating {
+        .p-t-l(16,0);
+        .fs(12);
+        color: rgb(147, 153, 159);
+      }
     }
   }
 }
