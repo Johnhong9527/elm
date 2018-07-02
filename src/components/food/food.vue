@@ -20,8 +20,12 @@
           </div>
         </div>
         <div class="cartcontrol-wrapper">
-          <s-cartcontrol @add='addFood' :food='food'></s-cartcontrol>
+          <s-cartcontrol @add='addFood($event)' :food='food'></s-cartcontrol>
         </div>
+        <transition name='fade'>
+          <div @click.stop.prevent='addFirst(food,$event)' class="buy"
+            v-show="!food.count || food.count === 0">加入购物车</div>
+        </transition>
       </div>
     </div>
   </transition>
@@ -60,8 +64,16 @@ export default {
     hide() {
       this.showFlag = false;
     },
-    addFood() {
-      
+    addFood(target) {
+      this.$parent.addFood(target);
+    },
+    addFirst(food, event) {
+      /* eslint-disable no-underscore-dangle */
+      if (!event._constructed) {
+        return;
+      }
+      this.$emit("add", event.target);
+      this.$set(this.food, "count", 1);
     }
   }
 };
@@ -147,6 +159,34 @@ export default {
         .fs(10);
         color: rgb(147, 153, 159);
       }
+    }
+  }
+  .cartcontrol-wrapper {
+    position: absolute;
+    .r(12);
+    .b(12);
+  }
+  .buy {
+    position: absolute;
+    .r(18);
+    .b(18);
+    z-index: 10;
+    .h(24);
+    .lh(24);
+    .p-t-l(0,12);
+    box-sizing: border-box;
+    .br(12);
+    .fs(10);
+    color: #fff;
+    background-color: rgb(0, 160, 220);
+    opacity: 1;
+    &.fade-enter-active,
+    &.fade-leave-active {
+      transition: all 0.2s linear;
+    }
+    &.fade-enter,
+    &.fade-leave-to {
+      opacity: 0;
     }
   }
 }

@@ -41,7 +41,7 @@
       </ul>
     </div>
     <s-shopcart v-if="seller" ref='shopcart' :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice" :selectFoods='selectFoods'></s-shopcart>
-    <s-food ref='sFood' :food='selectFood'></s-food>
+    <s-food ref='sFood' @add="addFood" :food='selectFood'></s-food>
   </div>
 </template>
 <script>
@@ -130,7 +130,6 @@ export default {
       if (!event._constructed) {
         return;
       }
-      event.stopPropagation();
       this._drop(target);
     },
     _drop(target) {
