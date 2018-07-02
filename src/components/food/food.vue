@@ -18,14 +18,29 @@
             <span class="now">￥{{food.price}}</span>
             <span class="old" v-show="food.oldPrice">￥{{food.oldPrice}}</span>
           </div>
-        </div>
-        <div class="cartcontrol-wrapper">
+           <div class="cartcontrol-wrapper">
           <s-cartcontrol @add='addFood($event)' :food='food'></s-cartcontrol>
         </div>
         <transition name='fade'>
           <div @click.stop.prevent='addFirst(food,$event)' class="buy"
             v-show="!food.count || food.count === 0">加入购物车</div>
         </transition>
+        </div>
+        <s-split v-show="food.info"></s-split>
+        <div class="info" v-show="food.info">
+          <h1 class="title">商品信息</h1>
+          <div class="text">{{food.info}}</div>
+        </div>
+        <s-split v-show="food.info"></s-split>
+        <div class="rating">
+          <h1 class="title">商品评价</h1>
+          <s-ratingselect
+            :selectType="selectType"
+            @select="selectRating"
+            @toggle="toggleContent"
+            :onlyContent='onlyContent'
+            :desc="desc" :ratings='food.ratings' ></s-ratingselect>
+        </div>
       </div>
     </div>
   </transition>
@@ -33,11 +48,23 @@
 <script>
 import BScroll from "better-scroll";
 import cartcontrol from "components/cartcontrol/cartcontrol";
+import split from "components/split/split";
+import ratingselect from "components/ratingselect/ratingselect";
+// const POSITIVE = 0;
+// const NEGATIVE = 1;
+const ALL = 2;
 
 export default {
   data() {
     return {
-      showFlag: false
+      showFlag: false,
+      selectType: ALL,
+      onlyContent: true,
+      desc: {
+        all: "全部",
+        positive: "推荐",
+        negative: "吐槽"
+      }
     };
   },
   props: {
@@ -46,11 +73,15 @@ export default {
     }
   },
   components: {
-    "s-cartcontrol": cartcontrol
+    "s-cartcontrol": cartcontrol,
+    "s-split": split,
+    "s-ratingselect": ratingselect
   },
   methods: {
     show() {
       this.showFlag = true;
+      this.selectType = ALL;
+      this.onlyContent = false;
       this.$nextTick(() => {
         if (!this.scroll) {
           this.scroll = new BScroll(this.$refs.food, {
@@ -66,6 +97,18 @@ export default {
     },
     addFood(target) {
       this.$parent.addFood(target);
+    },
+    selectRating(type) {
+      this.selectType = type;
+      this.$nextTick(() => {
+        this.scroll.refresh();
+      });
+    },
+    toggleContent() {
+      this.onlyContent = !this.onlyContent;
+      this.$nextTick(() => {
+        this.scroll.refresh();
+      });
     },
     addFirst(food, event) {
       /* eslint-disable no-underscore-dangle */
@@ -125,6 +168,7 @@ export default {
   }
   .content {
     .p(18);
+    position: relative;
     .title {
       .lh(18);
       .mb(8);
@@ -160,33 +204,57 @@ export default {
         color: rgb(147, 153, 159);
       }
     }
-  }
-  .cartcontrol-wrapper {
-    position: absolute;
-    .r(12);
-    .b(12);
-  }
-  .buy {
-    position: absolute;
-    .r(18);
-    .b(18);
-    z-index: 10;
-    .h(24);
-    .lh(24);
-    .p-t-l(0,12);
-    box-sizing: border-box;
-    .br(12);
-    .fs(10);
-    color: #fff;
-    background-color: rgb(0, 160, 220);
-    opacity: 1;
-    &.fade-enter-active,
-    &.fade-leave-active {
-      transition: all 0.2s linear;
+    .cartcontrol-wrapper {
+      position: absolute;
+      .r(12);
+      .b(12);
     }
-    &.fade-enter,
-    &.fade-leave-to {
-      opacity: 0;
+    .buy {
+      position: absolute;
+      .r(18);
+      .b(18);
+      z-index: 10;
+      .h(24);
+      .lh(24);
+      .p-t-l(0,12);
+      box-sizing: border-box;
+      .br(12);
+      .fs(10);
+      color: #fff;
+      background-color: rgb(0, 160, 220);
+      opacity: 1;
+      &.fade-enter-active,
+      &.fade-leave-active {
+        transition: all 0.2s linear;
+      }
+      &.fade-enter,
+      &.fade-leave-to {
+        opacity: 0;
+      }
+    }
+  }
+  .info {
+    .p(18);
+    .title {
+      .lh(14);
+      .mb(16);
+      .fs(14);
+      color: rgb(7, 17, 27);
+    }
+    .text {
+      .lh(24);
+      .p-t-l(0,8);
+      .fs(12);
+      color: rgb(77, 85, 93);
+    }
+  }
+  .rating {
+    .pt(18);
+    .title {
+      .lh(14);
+      .ml(18);
+      .fs(14);
+      color: rgb(7, 17, 27);
     }
   }
 }
