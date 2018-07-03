@@ -51,6 +51,7 @@ module.exports = {
     'prefer-const': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'linebreak-style': 'off',
     'quotes': 'off',
-    'comma-dangle': 'off'
+    'comma-dangle': 'off',
+    'max-len': 'off'
   }
 }

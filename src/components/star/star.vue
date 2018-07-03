@@ -1,7 +1,6 @@
 <template>
   <div class="star" :class="startType">
-    <span class="star-item" v-for="(itemClass,index) in itemClasses"
-    :key=index :class='itemClass'></span>
+    <span class="star-item" v-for="(itemClass,index) in itemClasses" :key=index :class='itemClass'></span>
   </div>
 </template>
 <script>
@@ -16,10 +15,10 @@ export default {
   },
   computed: {
     itemClasses() {
-      const result = [];
-      const score = Math.floor(4.5 * 2) / 2;
-      const hasDecimal = score % 1 !== 0;
-      const integer = Math.floor(score);
+      let result = [];
+      let score = Math.floor(this.score * 2) / 2;
+      let hasDecimal = score % 1 !== 0;
+      let integer = Math.floor(score);
       for (let i = 0; i < integer; i += 1) {
         result.push(CLS_ON);
       }
@@ -55,9 +54,9 @@ export default {
       .h(20);
       .mr(22);
       .b_s(20,20);
-       &:last-child{
-      margin-right: 0;
-    }
+      &:last-child {
+        margin-right: 0;
+      }
       &.on {
         .bg_image('star48_on');
       }
@@ -75,9 +74,9 @@ export default {
       .h(15);
       .mr(6);
       .b_s(15,15);
-       &:last-child{
-      margin-right: 0;
-    }
+      &:last-child {
+        margin-right: 0;
+      }
       &.on {
         .bg_image('star36_on');
       }
@@ -95,9 +94,9 @@ export default {
       .h(10);
       .mr(3);
       .b_s(10,10);
-       &:last-child{
-      margin-right: 0;
-    }
+      &:last-child {
+        margin-right: 0;
+      }
       &.on {
         .bg_image('star24_on');
       }
