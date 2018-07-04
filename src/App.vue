@@ -15,11 +15,14 @@
     <div v-if='address'>
       {{address}}
     </div>
-    <router-view :seller="seller" />
+    <keep-alive>
+      <router-view :seller="seller"></router-view>
+    </keep-alive>
   </div>
 </template>
 
 <script>
+import urlParse from 'common/js/util';
 import header from 'components/header/header';
 import axios from 'axios';
 
@@ -28,16 +31,22 @@ export default {
   name: 'App',
   data() {
     return {
-      seller: null,
-      goods: null,
+      seller: {
+        id: (() => {
+          let queryParam = urlParse();
+          return queryParam.id;
+        })(),
+      },
       address: null,
     };
   },
   created() {
     const self = this;
-    axios.get('/api/seller').then((data) => {
+    /* eslint-disable arrow-parens */
+    axios.get('/api/seller').then(data => {
       if (data.data.errno === ERR_OK) {
-        self.seller = data.data.data;
+        // 合并对象(:扩展对象属性)
+        self.seller = Object.assign({}, this.seller, data.data.data);
       }
     });
     //

@@ -1,5 +1,5 @@
 <template>
-  <div class="header" v-if='seller'>
+  <div class="header" v-if='seller.name'>
     <div class="content-wrapper">
       <div class="avatar">
         <img :src="seller.avatar" alt="">
@@ -46,11 +46,11 @@
             <ul v-if="seller.supports" class="supports">
               <li class="supports-item" v-for="(item,index) in seller.supports" :key='index'>
                 <span class="icon" :class="classMap[seller.supports[index].type]"></span>
-                <span class="text">{{
-                  seller.supports[index].description}}</span>
+                <span class="text">{{ seller.supports[index].description}}
+                </span>
               </li>
             </ul>
-              <div class="title">
+            <div class="title">
               <div class="line"></div>
               <div class="text">商家公告</div>
               <div class="line"></div>
@@ -235,8 +235,9 @@ export default {
     width: 100%;
     height: 100%;
     background: rgba(7, 17, 27, 0.8);
-    &.fade-enter-active, &.fade-leave-active {
-      transition: opacity .5s;
+    &.fade-enter-active,
+    &.fade-leave-active {
+      transition: opacity 0.5s;
     }
     &.fade-enter, &.fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
       opacity: 0;
@@ -253,23 +254,23 @@ export default {
           font-weight: 700;
           text-align: center;
         }
-        .star-wrapper{
+        .star-wrapper {
           .mt(18);
           .p-t-l(2, 0);
           text-align: center;
         }
-        .title{
+        .title {
           display: flex;
           align-items: center;
           width: 80%;
           .p-t-l(0,14);
           margin: unit(30 / @scale, rem) auto unit(24 / @scale, rem) auto;
-          .line{
+          .line {
             flex: 1;
             position: relative;
-            border-bottom: 1px solid rgba(255,255,255,0.2);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
           }
-          .text{
+          .text {
             .fs(14);
             .lh(14);
             .p-t-l(0,12);
@@ -277,17 +278,17 @@ export default {
             font-weight: 700;
           }
         }
-        .supports{
+        .supports {
           width: 80%;
           margin: 0 auto;
-          .supports-item{
+          .supports-item {
             .p-t-l(0,12);
             .mb(12);
             font-size: 0;
-            &:last-child{
+            &:last-child {
               margin-bottom: 0;
             }
-            .icon{
+            .icon {
               display: inline-block;
               .w(16);
               .h(16);
@@ -296,30 +297,30 @@ export default {
               .b_s(16,16);
               vertical-align: top;
               .mr(6);
-              background-repeat:no-repeat;
-              &.decrease{
+              background-repeat: no-repeat;
+              &.decrease {
                 .bg_image('decrease_2');
               }
-              &.discount{
+              &.discount {
                 .bg_image('discount_2');
               }
-              &.special{
+              &.special {
                 .bg_image('special_2');
               }
-              &.invoice{
+              &.invoice {
                 .bg_image('invoice_2');
               }
-              &.guarantee{
+              &.guarantee {
                 .bg_image('guarantee_2');
               }
             }
-            .text{
+            .text {
               .lh(16);
               .fs(12);
             }
           }
         }
-        .bulletin{
+        .bulletin {
           .fs(12);
           .lh(24);
           .p-t-l(0,48);
